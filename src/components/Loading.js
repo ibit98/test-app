@@ -1,31 +1,21 @@
 import React from "react";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 class Loading extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading : true,
-            done : false
-        }
-    }
     componentDidMount() {
         setTimeout(() =>
-            this.setState({
-                loading : false,
-                done : true
-            }),
-            5000
+            this.props.onLoad(),
+            1000
         )
     }
     render() {
         return(
             <div>
-                {this.state.loading && (
-                    <div> Fetching Data</div>
-                )}
-                {this.state.done && (
-                    <div> Welcome to My Page </div>
-                )}
+                <PropagateLoader
+                    size={25}
+                    color={"#F8E71C"}
+                    loading={true}
+                />
             </div>
         )
     }

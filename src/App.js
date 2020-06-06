@@ -1,26 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import FadeIn from "react-fade-in";
+import Loading from './components/Loading';
+import Landing from './components/Landing';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading : true
+        }
+    }
+    onLoad = () => (
+        this.setState({
+            loading : false
+        })
+    )
+    render() {
+        return(
+            <div className="App">
+                {this.state.loading ?
+                    <header className="App-header">
+                        <Loading onLoad={this.onLoad}/>
+                    </header>:
+                    <FadeIn transitionDuration={600} >
+                        <Landing />
+                    </FadeIn>
+                }
+            </div>
+        )
+    }
 }
 
 export default App;
