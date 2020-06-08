@@ -24,7 +24,7 @@ class App extends React.Component {
                     <header className="App-header">
                         <Loading onLoad={this.onLoad}/>
                     </header>:
-                    <FadeIn transitionDuration={600} >
+                    <FadeIn delay={500} transitionDuration={800} >
                         <Landing />
                     </FadeIn>
                 }

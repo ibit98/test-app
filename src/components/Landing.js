@@ -1,6 +1,7 @@
 import React from 'react';
-import { Switch, Route, Link } from "react-router-dom";
+import { Route, NavLink } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
+import { CSSTransition } from 'react-transition-group'
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import ListItem from "@material-ui/core/ListItem";
@@ -10,31 +11,36 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import ReactCanvasNest from 'react-canvas-nest';
-import background from '../images/01.jpg'
-import Home from "./Home";
 import AppBar from "@material-ui/core/AppBar";
+
+import Home from "./Home";
+import About from "./About";
 
 const Index = [
     {
-        path :'/home',
-        name : 'Home'
+        path :'/',
+        name : 'Home',
+        Component: Home
     },
     {
         path :'/about',
-        name : 'About'
+        name : 'About',
+        Component: About
     },
     {
         path :'/skills',
-        name :'Skills'
+        name :'Skills',
+        Component: Home
     },
     {
         path :'/projects',
-        name : 'Projects'
+        name : 'Projects',
+        Component: Home
     },
     {
         path :'/contact',
-        name :'Contact'
+        name :'Contact',
+        Component: Home
     }
 ]
 
@@ -42,7 +48,7 @@ const useStyles = makeStyles((theme) =>({
     title:{
         display: "inline-block",
         textAlign:"left",
-        fontFamily: 'Raleway',
+        fontFamily: 'Roboto-Slab',
         color: "#000000"
     },
     menuButton: {
@@ -51,7 +57,7 @@ const useStyles = makeStyles((theme) =>({
     },
     index:{
         display: "block",
-        maxWidth: 400,
+        maxWidth: '400vw',
         float: "right"
     },
     button:{
@@ -59,53 +65,24 @@ const useStyles = makeStyles((theme) =>({
         color: '#1976d2',
         fontFamily: 'Lato',
         '&:hover': {
-            color: '#f46524',
-        },
-        '&:active': {
-            color: '#f46524',
-        },
+            color: '#f46548',
+        }
     },
-    background: {
-        backgroundImage: `url(${background})`,
-        width: 'auto',
-        height: '750px',
-        minHeight:'auto',
-        minWidth:'auto',
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        position: "relative",
-        backgroundAttachment: "fixed",
-
+    selected:{
+        color: '#f46524',
+        fontWeight: "bold"
     },
     appbar:{
-        backgroundColor:'#ffffff00'
+        backgroundColor:'#ffffff99'
     },
     container:{
-        // backgroundImage: `url(${background})`,
         backgroundSize: "cover",
-        width:'100%',
-        height:'700px',
+        height:'100vh',
         position:"absolute",
-        //opacity:.5,
-        backgroundAttachment: "fixed",
-    },
-    canvasNest:{
-        width:'100%',
-        height:'100%',
-        opacity:1
     }
 }))
 
-const config ={
-    count: 80,
-    pointR: 3,
-    pointColor:'0,221,205',
-    dist: 100,
-    lineColor:'222,228,27',
-    lineWidth:4,
-    follow: true,
-    mouseDist: 20000
-}
+
 
 function Landing () {
     const classes=useStyles();
@@ -119,54 +96,71 @@ function Landing () {
         }
     }
     return(
-        <div className={classes.container} >
-            <ReactCanvasNest className={classes.canvasNest} config={config} />
-            <AppBar position='fixed' className={classes.appbar}>
-                <Toolbar className={classes.menu}>
-                    <div style={{marginRight:"auto"}}>
-                        <IconButton edge="start" aria-label="menu" onClick={toggleDrawer}>
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant='subtitle1' className={classes.title} >
-                            Indranil Bit
-                        </Typography>
-                    </div>
-                    <div style={{marginLeft:"auto"}}>
-                        {
-                            Index.map((item) =>
-                                <Button className={classes.menuButton}>
-                                    <Link className={classes.button} to={item.path}>
-                                        {item.name}
-                                    </Link>
-                                </Button>
-                            )
-                        }
-                    </div>
-                </Toolbar>
-            </AppBar>
-            <SwipeableDrawer
-                open={DrawerState}
-                onClose={toggleDrawer}
-                onOpen={toggleDrawer}
-            >
-                <List>
-                    {Index.map((text) => (
-                        <Link className={classes.button} to={text.path} onClick={toggleDrawer}>
-                            <ListItem button key={text.path} >
-                                <ListItemText primary={text.name} />
-                            </ListItem>
-                        </Link>
-                    ))}
-                </List>
-            </SwipeableDrawer>
-            <Switch>
-                <Route path="/" component={Home} exact/>
-                <Route path="/home" component={Home}/>
-                <Route path="/about" component={Home}/>
-                <Route path="/skills" component={Home}/>
-                <Route path="/projects" component={Home}/>
-                <Route path="/contact" component={Home}/>
-            </Switch>
+        <div >
+            <div className={classes.container} >
+                <AppBar position='fixed' className={classes.appbar}>
+                    <Toolbar >
+                        <div style={{marginRight:"auto"}}>
+                            <IconButton edge="start" aria-label="menu" onClick={toggleDrawer}>
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography variant='subtitle1' className={classes.title} >
+                                Indranil Bit
+                            </Typography>
+                        </div>
+                        <div style={{marginLeft:"auto"}}>
+                            {
+                                Index.map((item) =>
+                                    <Button className={classes.menuButton}>
+                                        <NavLink className={classes.button}
+                                                 to={item.path}
+                                                 activeClassName={classes.selected}
+                                                 exact
+                                        >
+                                            {item.name}
+                                        </NavLink>
+                                    </Button>
+                                )
+                            }
+                        </div>
+                    </Toolbar>
+                </AppBar>
+                <SwipeableDrawer
+                    open={DrawerState}
+                    onClose={toggleDrawer}
+                    onOpen={toggleDrawer}
+                >
+                    <List>
+                        {Index.map((text) => (
+                            <NavLink
+                                className={classes.button}
+                                to={text.path}
+                                activeClassName={classes.selected}
+                                onClick={toggleDrawer}
+                                exact
+                            >
+                                <ListItem button key={text.path} >
+                                    <ListItemText primary={text.name} />
+                                </ListItem>
+                            </NavLink>
+                        ))}
+                    </List>
+                </SwipeableDrawer>
+            </div>
+                {Index.map(({ path, Component }) => (
+                    <Route key={path} exact path={path}>
+                        {({ match }) => (
+                            <CSSTransition
+                                in={match != null}
+                                timeout={300}
+                                classNames='page'
+                                unmountOnExit
+                            >
+                                <Component/>
+                            </CSSTransition>
+                        )}
+                    </Route>
+                ))}
         </div>
     )
 }

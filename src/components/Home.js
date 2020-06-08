@@ -3,19 +3,15 @@ import ReactTypingEffect from 'react-typing-effect';
 import {makeStyles} from "@material-ui/core/styles";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Fab from '@material-ui/core/Fab';
+import ReactCanvasNest from "react-canvas-nest";
+import {NavLink} from "react-router-dom";
 
 const useStyles = makeStyles((theme)=>({
     heading:{
         fontFamily : 'Raleway',
         fontWeight: "bold",
         fontSize: 50,
-        color: '#f46524'
-    },
-    image:{
-        maxWidth:'100%',
-        height:'auto',
-        display: "block",
-        margin : 0
+        color: '#f46524',
     },
     cursor:{
         fontFamily: 'Raleway',
@@ -23,50 +19,68 @@ const useStyles = makeStyles((theme)=>({
         color: '#000000'
     },
     container:{
-        paddingTop:100
+        backgroundSize: "cover",
+        width:'100%',
+        height:'auto',
+        maxHeight:"auto",
+        position:"absolute",
     },
     fab: {
-        position: 'absolute',
-        bottom: theme.spacing(16),
-        margin: "auto"
+        display:"block",
+        paddingTop:400,
+        paddingLeft:'20vw',
+        paddingRight:'20vw',
+        alignSelf: "center",
+
     },
-    fabGreen: {
-        color: theme.palette.common.white,
-        backgroundColor: '',
-        '&:hover': {
-            backgroundColor: '',
-        },
+    canvasNest:{
+        width:'100%',
+        height:'auto',
+        opacity:1
+    },
+    wrapper:{
+        paddingTop:100,
+        alignItems:"center"
     }
 }))
 
-const items = ['Indranil Bit.', 'a Competitive Coder.','an Web Developer.','a Data Science Enthusiastic.'];
+const config ={
+    count: 80,
+    pointR: 3,
+    pointColor:'0,221,205',
+    dist: 100,
+    lineColor:'222,228,27',
+    lineWidth:4,
+    follow: true,
+    mouseDist: 20000
+}
+
+const items = ['Indranil Bit.', 'a Competitive Coder.','a Web Developer.','a Data Enthusiastic.'];
 function Home() {
     const classes=useStyles();
-    // const [imgURL,setURL]=React.useState("");
-    // useEffect(()=> {
-    //     client.photos.search({query})
-    //         .then(photos => {
-    //             console.log(Math.floor(Math.random() * 15));
-    //             setURL(photos.photos[Math.floor(Math.random() * 15)].src.landscape);
-    //         })
-    //     }
-    // );
     return (
-        <div>
         <div className={classes.container}>
-            <ReactTypingEffect
-                className={classes.heading}
-                staticText="I am" text={items}
-                eraseDelay={50}
-                typingDelay={200}
-                cursorClassName={classes.cursor}
-            />
-        </div>
-        <div>
-            <Fab size="medium" color="secondary" aria-label="add" className={classes.fab}>
-                <ExpandMoreIcon />
-            </Fab>
-        </div>
+            <ReactCanvasNest className={classes.canvasNest} config={config} />
+            <div className={classes.wrapper}>
+                <ReactTypingEffect
+                    className={classes.heading}
+                    staticText="I am" text={items}
+                    eraseDelay={50}
+                    typingDelay={50}
+                    cursorClassName={classes.cursor}
+                />
+                <div className={classes.fab}>
+                    <NavLink     to={'about'}>
+                        <Fab
+                            size="medium"
+                            color="secondary"
+                            aria-label="add"
+                        >
+                            <ExpandMoreIcon />
+                        </Fab>
+                    </NavLink>
+                </div>
+            </div>
         </div>
     )
 }
